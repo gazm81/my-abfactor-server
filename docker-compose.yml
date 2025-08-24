@@ -1,26 +1,21 @@
 services:
-  abfactor-server:
+  abiotic-server:
     build: .
-    container_name: abfactor-server
-    ports:
-      - "7777:7777/udp"  # Game port
-      - "7778:7778/udp"  # Query port
-      - "27015:27015/udp"  # Steam port
-    volumes:
-      - ./server-data:/home/wine/abfactor-server
-      - wine-data:/home/wine/.wine
     restart: unless-stopped
+    volumes:
+      - "./gamefiles:/server"
+      - "./data:/server/AbioticFactor/Saved"
     environment:
-      - WINEARCH=win64
-      - WINEPREFIX=/home/wine/.wine
-      - DISPLAY=:0
-    healthcheck:
-      test: ["CMD", "pgrep", "-f", "AbioticFactor"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
-volumes:
-  wine-data:
-    driver: local
+      - MaxServerPlayers=6
+      - Port=7777
+      - QueryPort=27015
+      - ServerPassword=${SERVER_PASSWORD:-}
+      - SteamServerName=${SERVER_NAME:-Abiotic Factor Server}
+      - UsePerfThreads=true
+      - NoAsyncLoadingThread=true
+      - WorldSaveName=${WORLD_SAVE_NAME:-Cascade}
+      - AutoUpdate=${AUTO_UPDATE:-false}
+      # - AdditionalArgs=-SandboxIniPath=Config/WindowsServer/Server1Sandbox.ini
+    ports:
+      - "7777:7777/udp"
+      - "27015:27015/udp"

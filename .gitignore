@@ -1,52 +1,21 @@
-# Docker
-.docker/
-docker-compose.override.yml
-
-# Server data and logs
-server-data/
-logs/
-*.log
-
-# Game server specific files
-ServerSettings.ini
-save/
-backups/
-
-# Wine and Steam files
-.wine/
-steamcmd/
-*.msi
-*.exe
-
-# Temporary files
-tmp/
-temp/
-*.tmp
-
 # Environment files
 .env
-.env.local
-.env.production
 
-# IDE and editor files
+# Server data
+gamefiles/
+data/
+backups/
+
+# Docker
+docker-compose.override.yml
+
+# IDE files
 .vscode/settings.json
 .idea/
-*.swp
-*.swo
-*~
 
-# OS generated files
+# OS files
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 
-# Secrets and sensitive data
-secrets/
-*.key
-*.pem
-*.p12
-*.pfx
+# Logs
+*.log
