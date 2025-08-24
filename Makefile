@@ -1,41 +1,40 @@
-.PHONY: build run stop clean logs shell download-server lint
+.PHONY: help build up down logs status clean setup restart backup
 
-# Build the Docker image
-build:
-	docker build -t abfactor-server .
+help: ## Show this help message
+	@echo "Abiotic Factor Server - Available Commands:"
+	@echo ""
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
+	@echo ""
 
-# Run the server using docker compose
-run:
-	docker compose up -d
+build: ## Build the Docker image
+	docker-compose build
 
-# Stop the server
-stop:
-	docker compose down
+up: ## Start the server in the background
+	docker-compose up -d
 
-# Clean up containers and images
-clean:
-	docker compose down -v
-	docker rmi abfactor-server || true
+down: ## Stop the server
+	docker-compose down
 
-# View server logs
-logs:
-	docker compose logs -f
+logs: ## Show server logs (follow mode)
+	docker-compose logs -f
 
-# Access container shell
-shell:
-	docker compose exec abfactor-server bash
+status: ## Show server status
+	docker-compose ps
 
-# Download server files (interactive)
-download-server:
-	mkdir -p server-data
-	docker run -it --rm -v $$(pwd)/server-data:/home/wine/abfactor-server abfactor-server \
-		/home/wine/steamcmd/steamcmd.sh +force_install_dir /home/wine/abfactor-server +login anonymous +app_update 2857710 +quit
+clean: ## Stop server and remove volumes (WARNING: This deletes save data!)
+	docker-compose down -v
+	docker system prune -f
 
-# Run linting tools
-lint:
-	@echo "Running markdownlint..."
-	@docker run --rm -v $$(pwd):/workspace davidanson/markdownlint-cli2 "**/*.md"
-	@echo "Running yamllint..."
-	@docker run --rm -v $$(pwd):/workspace cytopia/yamllint .
-	@echo "Running hadolint (Dockerfile linter)..."
-	@docker run --rm -i hadolint/hadolint < Dockerfile
+setup: build up ## Build and start the server
+	@echo "Server starting... Check logs with 'make logs'"
+	@echo "Game files will be downloaded on first run (this may take 5-10 minutes)"
+
+restart: down up ## Restart the server
+
+backup: ## Backup save data
+	@mkdir -p backups
+	@tar -czf backups/abfactor-backup-$(shell date +%Y%m%d-%H%M%S).tar.gz data/
+	@echo "Backup created in backups/ directory"
+
+# Default target
+.DEFAULT_GOAL := help
