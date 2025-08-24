@@ -1,0 +1,49 @@
+{
+  "name": "Abiotic Factor Server",
+  "dockerFile": "../Dockerfile",
+  "context": "..",
+  "workspaceFolder": "/home/wine",
+  "runArgs": [
+    "--privileged",
+    "--cap-add=SYS_ADMIN"
+  ],
+  "mounts": [
+    "source=${localWorkspaceFolder}/server-data,target=/home/wine/abfactor-server,type=bind,consistency=cached"
+  ],
+  "forwardPorts": [
+    7777,
+    7778,
+    27015
+  ],
+  "portsAttributes": {
+    "7777": {
+      "label": "Game Port (UDP)",
+      "protocol": "udp"
+    },
+    "7778": {
+      "label": "Query Port (UDP)",
+      "protocol": "udp"
+    },
+    "27015": {
+      "label": "Steam Port (UDP)",
+      "protocol": "udp"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.vscode-docker",
+        "davidanson.vscode-markdownlint",
+        "redhat.vscode-yaml"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "files.eol": "\n",
+        "files.insertFinalNewline": true,
+        "files.trimTrailingWhitespace": true
+      }
+    }
+  },
+  "postCreateCommand": "echo 'Abiotic Factor Server development environment ready!'",
+  "remoteUser": "wine"
+}
