@@ -45,5 +45,6 @@
     }
   },
   "postCreateCommand": "echo 'Abiotic Factor Server development environment ready!'",
+  "postStartCommand": "supervisorctl start abfactor-server",
   "remoteUser": "wine"
 }
