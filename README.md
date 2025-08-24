@@ -78,7 +78,6 @@ This repository includes a development container configuration for VS Code.
 Create a `docker-compose.yml` file:
 
 ```yaml
-version: '3.8'
 services:
   abfactor-server:
     build: .
@@ -101,7 +100,7 @@ volumes:
 Then run:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ## Server Configuration

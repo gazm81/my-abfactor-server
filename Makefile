@@ -4,26 +4,26 @@
 build:
 	docker build -t abfactor-server .
 
-# Run the server using docker-compose
+# Run the server using docker compose
 run:
-	docker-compose up -d
+	docker compose up -d
 
 # Stop the server
 stop:
-	docker-compose down
+	docker compose down
 
 # Clean up containers and images
 clean:
-	docker-compose down -v
+	docker compose down -v
 	docker rmi abfactor-server || true
 
 # View server logs
 logs:
-	docker-compose logs -f
+	docker compose logs -f
 
 # Access container shell
 shell:
-	docker-compose exec abfactor-server bash
+	docker compose exec abfactor-server bash
 
 # Download server files (interactive)
 download-server:
