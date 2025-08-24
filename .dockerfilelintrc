@@ -1,0 +1,18 @@
+rules:
+  # Allow uppercase commands for better readability
+  uppercase_commands: true
+  
+  # Allow multiple RUN commands for clarity
+  multiple_run_commands: true
+  
+  # Require specific version tags
+  from_first: true
+  
+  # Allow maintainer instruction
+  maintainer_deprecated: false
+  
+  # Allow sudo usage (needed for Wine setup)
+  sudo_usage: false
+  
+  # Allow package upgrades
+  package_upgrades: false

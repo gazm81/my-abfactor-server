@@ -1,0 +1,26 @@
+services:
+  abfactor-server:
+    build: .
+    container_name: abfactor-server
+    ports:
+      - "7777:7777/udp"  # Game port
+      - "7778:7778/udp"  # Query port
+      - "27015:27015/udp"  # Steam port
+    volumes:
+      - ./server-data:/home/wine/abfactor-server
+      - wine-data:/home/wine/.wine
+    restart: unless-stopped
+    environment:
+      - WINEARCH=win64
+      - WINEPREFIX=/home/wine/.wine
+      - DISPLAY=:0
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "AbioticFactor"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  wine-data:
+    driver: local
